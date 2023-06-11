@@ -1,24 +1,23 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
-import streamlit as st
-import pandas as pd
-
-st.title("Stock Data App")
 
 # 株価コードを入力
-stock_code = st.text_input("Enter the stock code: ")  # 例: '9613.T' for NTT Data
-interval = st.selectbox("Enter the interval:", ('1d', '1wk', '1mo'))  # '1d', '1wk', or '1mo'
+stock_code = input("Enter the stock code: ")  # 例: '9613.T' for NTT Data
+interval = input("Enter the interval (1d, 1wk, 1mo): ")  # '1d', '1wk', or '1mo'
 
 # 開始日と終了日を入力
-start_date = st.date_input("Enter the start date")
-end_date = st.date_input("Enter the end date")
+start_date = input("Enter the start date (YYYY-MM-DD): ")
+end_date = input("Enter the end date (YYYY-MM-DD): ")
 
 # データを取得
-if st.button('Get Data'):
-    with st.spinner('Downloading data...'):
-        data = yf.download(stock_code, start=start_date, end=end_date, interval=interval)
-    st.success('Downloaded data!')
+data = yf.download(stock_code, start=start_date, end=end_date, interval=interval)
 
-    # データのプロット
-    st.write(f'Closing price of {stock_code} with {interval} interval')
-    st.line_chart(data['Close'])
+# データのプロット
+plt.figure(figsize=(14, 7))
+plt.plot(data.Close)
+plt.title('Closing price of ' + stock_code + ' with ' + interval + ' interval')
+plt.xlabel('Date')
+plt.ylabel('Closing Price')
+plt.grid()
+plt.show()
+
